@@ -17,9 +17,120 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+
+    <style>
+        body    {
+            background-color : #001126;
+        }
+        @keyframes          firework-animation {
+            0% {background-color : #ff8426;}
+            25% {background-color : #fffc84;}
+            50% {background-color : #ff83f4;}
+            75% {background-color : #83b6ff;}
+            100% {background-color : #ff8426;}
+        }
+        @-webkit-keyframes  firework-animation {
+            0% {background-color : #ff8426;}
+            25% {background-color : #fffc84;}
+            50% {background-color : #ff83f4;}
+            75% {background-color : #83b6ff;}
+            100% {background-color : #ff8426;}
+        }
+        @keyframes          firework-seed-animation {
+            0% {background-color : #ff8426;}
+            25% {background-color : #fffc84;}
+            100% {background-color : #ff8426;}
+        }
+        @-webkit-keyframes  firework-seed-animation {
+            0% {background-color : #ff8426;}
+            25% {background-color : #fffc84;}
+            100% {background-color : #ff8426;}
+        }
+        @keyframes          firework-fade-animation {
+            0% {opacity : 1;}
+            50% {opacity : 1;}
+            100% {opacity : 0;}
+        }
+        @-webkit-keyframes  firework-fade-animation {
+            0% {opacity : 1;}
+            50% {opacity : 1;}
+            100% {opacity : 0;}
+        }
+        .fireWorkBatch {
+            z-index : 999;
+            position: absolute;
+            top : 0px;
+            left : 0px;
+            animation-name : firework-fade-animation;
+            animation-timing-function : cubic-bezier(0.5, 0, 1. 1);
+            animation-duration : 2.5s;
+        }
+        .fireWorkParticle {
+            z-index : 999;
+            position: absolute;
+            height : 5px;
+            width : 5px;
+            border-radius : 2.5px;
+            animation-name : firework-animation;
+            animation-timing-function : linear;
+            animation-duration : 1s;
+            animation-iteration-count : infinite;
+        }
+        .fireWorkSeed {
+            z-index : 999;
+            position: absolute;
+            height : 5px;
+            width : 5px;
+            border-radius : 5px;
+            animation-name : firework-seed-animation;
+            animation-timing-function : linear;
+            animation-duration : 0.5s;
+            animation-iteration-count : infinite;
+        }       
+        </style>
+
+
+
+
+
+
 </head>
 
 <body id="page-top">
+
+
+
+    <div id = "board"></div>
+        <center>
+            <h1>
+                <font style = "font-family:impact;color:white;"><br><br><br>----------Tap on the screen anywhere to see magic.----------<font><br><br>
+            </h1>
+        </center>
+        <center>
+            <h1>
+                <font style = "font-family:impact;color:red;">Wishing you a very Happy Diwali <br><br>~Hamdan<font><br><br>
+            </h1>
+        </center>
+        <center>
+            <h1>
+                <font style = "font-family:calibri;color:yellow;">May this festival of lights brings a lot of positive light within ourselves<br>and fill our lives with happiness and joy.<br><br>Wishing you all a very happy and safe Diwali from Hamdan in a pretty unique way :).<font>
+            </h1>
+        </center>
+        <p align="right">
+            <h6 align="right">
+                <font style = "font-family:calibri;color:grey;">Credits: https://medium.com/front-end-weekly/how-to-add-some-fireworks-to-your-website-18b594b06cca<font>
+            </h16>
+        </p>
+
+
+
+
+
+
+
+
+
+
 
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -47,6 +158,44 @@
             </div>
         </div>
     </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     <!-- Masthead-->
@@ -1109,4 +1258,153 @@
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
 </body>
+<script>
+        var brd = document.createElement("DIV");
+        document.body.insertBefore(brd, document.getElementById("board"));
+
+        seeds = [];
+        particles = [];
+
+        const fwkPtcIniV = 0.5;
+        const fwkSedIniV = 0.5;
+        const fwkPtcIniT = 2500;
+        const fwkSedIniT = 1000;
+        const a = 0.0005;
+        const g = 0.0005;
+        const v = 0.3;
+        const cursorXOffset = 5;
+        const cursorYOffset = 0;
+
+
+        function newFireworkParticle(x, y, angle)
+        {
+            var fwkPtc = document.createElement("DIV");
+            fwkPtc.setAttribute('class', 'fireWorkParticle');
+            fwkPtc.time = fwkPtcIniT;
+            while(angle > 360)
+                angle -= 360;
+            while(angle < 0)
+                angle += 360;
+            fwkPtc.velocity = [];
+            if(angle > 270)
+            {
+                fwkPtc.velocity.x = fwkPtcIniV * Math.sin(angle * Math.PI / 180) * (1 - Math.random() * v);
+                fwkPtc.velocity.y = fwkPtcIniV * Math.cos(angle * Math.PI / 180) * (1 - Math.random() * v);
+            }
+            else if(angle > 180)
+            {
+                fwkPtc.velocity.x = fwkPtcIniV * Math.sin(angle * Math.PI / 180) * (1 - Math.random() * v);
+                fwkPtc.velocity.y = fwkPtcIniV * Math.cos(angle * Math.PI / 180) * (1 - Math.random() * v);
+            }
+            else if(angle > 90)
+            {
+                fwkPtc.velocity.x = fwkPtcIniV * Math.sin(angle * Math.PI / 180) * (1 - Math.random() * v);
+                fwkPtc.velocity.y = fwkPtcIniV * Math.cos(angle * Math.PI / 180) * (1 - Math.random() * v);
+            }
+            else
+            {
+                fwkPtc.velocity.x = fwkPtcIniV * Math.sin(angle * Math.PI / 180) * (1 - Math.random() * v);
+                fwkPtc.velocity.y = fwkPtcIniV * Math.cos(angle * Math.PI / 180) * (1 - Math.random() * v);
+            }
+            fwkPtc.position = [];
+            fwkPtc.position.x = x;
+            fwkPtc.position.y = y;
+            fwkPtc.style.left = fwkPtc.position.x + 'px';
+            fwkPtc.style.top = fwkPtc.position.y + 'px';
+            if(particles == null)
+                particles = [];
+            particles.push(fwkPtc);
+            return fwkPtc;
+        }
+
+        document.addEventListener("click", newFireWorkOnClick);
+
+        function newFireWorkOnClick(event)
+        {
+            newFireworkSeed(event.pageX - brd.offsetLeft + cursorXOffset, event.pageY - brd.offsetTop + cursorYOffset);
+        }
+
+        function newFireworkSeed(x, y)
+        {
+            var fwkSed = document.createElement("DIV");
+            fwkSed.setAttribute('class', 'fireWorkSeed');
+            brd.appendChild(fwkSed);
+            fwkSed.time = fwkSedIniT;
+            fwkSed.velocity = [];
+            fwkSed.velocity.x = 0;
+            fwkSed.velocity.y = fwkSedIniV;
+            fwkSed.position = [];
+            fwkSed.position.x = x;
+            fwkSed.position.y = y;
+            fwkSed.style.left = fwkSed.position.x + 'px';
+            fwkSed.style.top = fwkSed.position.y + 'px';
+            if(seeds == null)
+                seeds = [];
+            seeds.push(fwkSed);
+            return fwkSed;
+        }
+        
+        function newFireWorkStar(x, y)
+        {
+            var fwkBch = document.createElement("DIV");
+            fwkBch.setAttribute('class', 'fireWorkBatch');
+            var a = 0;
+            while(a < 360)
+            {
+                var fwkPtc = newFireworkParticle(x, y, a);
+                fwkBch.appendChild(fwkPtc);
+                a += 5;
+            }
+            brd.appendChild(fwkBch);
+        }
+
+        var before = Date.now();
+        var id = setInterval(frame, 5);
+        
+        function frame()
+        {
+            var current = Date.now();
+            var deltaTime = current - before;
+            before = current;
+            for(i in seeds)
+            {
+                var fwkSed = seeds[i];
+                fwkSed.time -= deltaTime;
+                if(fwkSed.time > 0)
+                {
+                    fwkSed.velocity.x -= fwkSed.velocity.x * a * deltaTime;
+                    fwkSed.velocity.y -= g * deltaTime + fwkSed.velocity.y * a * deltaTime;
+                    fwkSed.position.x += fwkSed.velocity.x * deltaTime;
+                    fwkSed.position.y -= fwkSed.velocity.y * deltaTime;
+                    fwkSed.style.left = fwkSed.position.x + 'px';
+                    fwkSed.style.top = fwkSed.position.y + 'px';
+                }
+                else
+                {
+                    newFireWorkStar(fwkSed.position.x, fwkSed.position.y);
+                    fwkSed.parentNode.removeChild(fwkSed);
+                    seeds.splice(i, 1);
+                }
+            }
+            for(i in particles)
+            {
+                var fwkPtc = particles[i];
+                fwkPtc.time -= deltaTime;
+                if(fwkPtc.time > 0)
+                {
+                    fwkPtc.velocity.x -= fwkPtc.velocity.x * a * deltaTime;
+                    fwkPtc.velocity.y -= g * deltaTime + fwkPtc.velocity.y * a * deltaTime;
+                    fwkPtc.position.x += fwkPtc.velocity.x * deltaTime;
+                    fwkPtc.position.y -= fwkPtc.velocity.y * deltaTime;
+                    fwkPtc.style.left = fwkPtc.position.x + 'px';
+                    fwkPtc.style.top = fwkPtc.position.y + 'px';
+                }
+                else
+                {
+                    fwkPtc.parentNode.removeChild(fwkPtc);
+                    particles.splice(i, 1);
+                }
+            }
+        }
+    </script>
 </html>
